@@ -11,16 +11,16 @@ USER appuser
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 WORKDIR /src
-COPY ["member-service.csproj", "./"]
-RUN dotnet restore "member-service.csproj"
+COPY ["member-sv-setting.csproj", "./"]
+RUN dotnet restore "member-sv-setting.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "member-service.csproj" -c Release -o /app/build
+RUN dotnet build "member-sv-setting.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "member-service.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "member-sv-setting.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "member-service.dll"]
+ENTRYPOINT ["dotnet", "member-sv-setting.dll"]
