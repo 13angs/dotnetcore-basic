@@ -1,4 +1,4 @@
-namespace user_service;
+namespace member_service;
 
 public class WeatherForecast
 {
