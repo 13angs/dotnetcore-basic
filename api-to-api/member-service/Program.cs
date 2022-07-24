@@ -1,9 +1,12 @@
 using member_service.Models;
+using member_service.SyncDataService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddHttpClient<IMemberSetting, MemberSettingService>();
 
 builder.Services.AddControllers();
 
