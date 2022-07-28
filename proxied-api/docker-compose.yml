@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # endpoint=http://member-sv-setting:5000/api
+  # need to use api port not the container port
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - default
+
+  reverse-proxy:
+    image: nginx
+    restart: unless-stopped
+
+    environment:
+      - VIRTUAL_HOST=dotnetapi.com
+
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    
+    networks:
+      - default
+
+  
+  member-sv:
+    image: 13angs/dotnetbs-member-sv:latest
+    container_name: member-sv
+    
+    networks:
+      - default
+
+  member-sv-setting:
+    image: 13angs/dotnetbs-member-sv-setting:latest
+    container_name: member-sv-setting
+
+    networks:
+      - default
+
+networks:
+  default:
+    name: api-to-api-network
+  
