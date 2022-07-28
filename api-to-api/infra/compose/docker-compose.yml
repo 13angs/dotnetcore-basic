@@ -1,16 +1,32 @@
 version: '3.8'
 
+
+# run in the server not in the devcontainer
 services:
   # endpoint=http://member-sv-setting:5000/api
   # need to use api port not the container port
+  nginx-proxy:
+    image: nginx
+    restart: unless-stopped
+
+    ports:
+      - "5000:80"
+
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+
+    # environment:
+    #   - VIRTUAL_HOST=dotnetapi.com
+
+    networks:
+      - default
+    
   member-sv:
     image: 13angs/dotnetbs-member-sv:latest
     container_name: member-sv
     build:
       context: ../../member-service
       dockerfile: Dockerfile
-    ports:
-      - "5001:5000"
     
     networks:
       - default
@@ -21,8 +37,6 @@ services:
     build:
       context: ../../member-sv-setting
       dockerfile: Dockerfile
-    ports:
-      - "5002:5000"
 
     networks:
       - default
