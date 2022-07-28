@@ -1,5 +1,10 @@
-var builder = WebApplication.CreateBuilder(args);
+using member_sv_setting.Models;
+using Microsoft.EntityFrameworkCore;
 
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<MemberSettingContext>(option => {
+    option.UseInMemoryDatabase("MEMBER_SETTING_DB");
+});
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -22,4 +27,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// seed data to db
+SeedDb.Populate(app);
+
 app.Run();
+
+

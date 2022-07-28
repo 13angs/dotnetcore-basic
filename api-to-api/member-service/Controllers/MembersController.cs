@@ -1,4 +1,5 @@
 using member_service.Models;
+using member_service.SyncDataService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace member_service.Controllers
@@ -9,11 +10,16 @@ namespace member_service.Controllers
     {
         private readonly ILogger<MembersController> _logger;
         private readonly MemberContext context;
+        private readonly IMemberSetting memberSetting;
 
-        public MembersController(ILogger<MembersController> logger, MemberContext context)
+        public MembersController(
+            ILogger<MembersController> logger, 
+            MemberContext context,
+            IMemberSetting memberSetting)
         {
             _logger = logger;
             this.context = context;
+            this.memberSetting = memberSetting;
         }
 
         [HttpPost]
@@ -21,6 +27,11 @@ namespace member_service.Controllers
         {
             await context.Members.AddAsync(model);
             await context.SaveChangesAsync();
+
+            if(model.Id != 0)
+            {
+                await memberSetting.Create(model);
+            }
 
             return StatusCode(StatusCodes.Status201Created, model);
         }

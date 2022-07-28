@@ -1,4 +1,4 @@
-namespace setting_service;
+namespace member_sv_setting;
 
 public class WeatherForecast
 {
