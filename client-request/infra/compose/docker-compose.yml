@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  request-client:
+    image: 13angs/dotnetbs-client-request:latest
+    build: 
+      context: ../../
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - default
+
+  member-sv-setting:
+    image: 13angs/dotnetbs-member-sv-setting:latest
+    networks:
+      - default
+
+networks:
+  default:
+    name: compose_default
