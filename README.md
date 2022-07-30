@@ -1,0 +1,4 @@
+# Dotnet core basic project
+[![.Netbs Client-request](https://github.com/13angs/dotnetcore-basic/actions/workflows/dotnetbs-client-request.yml/badge.svg)](https://github.com/13angs/dotnetcore-basic/actions/workflows/dotnetbs-client-request.yml)
+[![.Netbs Member-sv](https://github.com/13angs/dotnetcore-basic/actions/workflows/dotnetbs-member-sv.yml/badge.svg)](https://github.com/13angs/dotnetcore-basic/actions/workflows/dotnetbs-member-sv.yml)
+[![.Netbs Member-sv-setting](https://github.com/13angs/dotnetcore-basic/actions/workflows/dotnetbs-member-sv-setting.yml/badge.svg)](https://github.com/13angs/dotnetcore-basic/actions/workflows/dotnetbs-member-sv-setting.yml)
