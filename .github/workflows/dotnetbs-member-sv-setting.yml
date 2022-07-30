@@ -1,11 +1,11 @@
-name: .Netbs Member-sv
+name: .Netbs Member-sv-setting
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - 'api-to-api/member-service/**'
+      - 'api-to-api/member-sv-setting/**'
   
 jobs:
   build:
@@ -40,7 +40,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with: 
-          images: 13angs/dotnetbs-member-sv
+          images: 13angs/dotnetbs-member-sv-setting
 
       - name: Login to Dockerhub
         uses: docker/login-action@v2
