@@ -1,44 +1,38 @@
 using System.Text;
 using System.Text.Json;
-using member_service.Models;
+using client_request.DTOs;
 
 namespace member_service.SyncDataService
 {
     public interface IMemberSetting
     {
-        public Task<object> Create(Member member);
-        public Task<object> Update(int id, Member member);
+        public Task<object> Create(MemberSettingModel model);
+        public Task<IEnumerable<object>> Get();
     }
 
-    public class MemberSettingModel 
-    {
-        public long MemberId {get; set;}
-        public string? Name {get; set;}
-    }
     public class MemberSettingService : IMemberSetting
     {
         private readonly HttpClient client;
         private readonly IConfiguration configuration;
 
+        public string endpoint {get; set; }
+        public string route {get; set; }
+
         public MemberSettingService(HttpClient client, IConfiguration configuration)
         {
             this.client = client;
             this.configuration = configuration;
+            endpoint = configuration["MemberSettingService:endpoint"];
+            route = configuration["MemberSettingService:route"];
 
         }
-        public async Task<object> Create(Member member)
+        public async Task<object> Create(MemberSettingModel model)
         {
-            MemberSettingModel settingModel = new MemberSettingModel{MemberId=member.Id, Name=member.Name};
             StringContent content = new StringContent(
-                JsonSerializer.Serialize(settingModel),
+                JsonSerializer.Serialize(model),
                 Encoding.UTF8,
                 "application/json"
             );
-
-            Console.WriteLine(member.Name);
-
-            string endpoint = configuration["MemberSettingService:endpoint"];
-            string route = configuration["MemberSettingService:route"];
 
             HttpResponseMessage response = new HttpResponseMessage();
             try{
@@ -60,23 +54,10 @@ namespace member_service.SyncDataService
 
         }
 
-        public async Task<object> Update(int id, Member member)
-        {
-            MemberSettingModel settingModel = new MemberSettingModel{MemberId=member.Id, Name=member.Name};
-            StringContent content = new StringContent(
-                JsonSerializer.Serialize(settingModel),
-                Encoding.UTF8,
-                "application/json"
-            );
-
-            Console.WriteLine(member.Name);
-
-            string endpoint = configuration["MemberSettingService:endpoint"];
-            string route = configuration["MemberSettingService:route"];
-
+        public async Task<IEnumerable<object>> Get(){
             HttpResponseMessage response = new HttpResponseMessage();
             try{
-                response = await client.PostAsync($"{endpoint}/{route}", content);
+                response = await client.GetAsync($"{endpoint}/{route}");
                 if(response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("--> Sync To MemberSetting Service is OK");
@@ -85,15 +66,18 @@ namespace member_service.SyncDataService
                 {
                     Console.WriteLine("--> Fail to Sync To MemberSetting");
                 }
-                return new {status=200};
+
+                var strRes = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(strRes);
+
+                IEnumerable<GetMemberSettingModel>? models = JsonSerializer.Deserialize<IEnumerable<GetMemberSettingModel>>(strRes);
+
+                return models!;
             }catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return new {status=400};
+                return new List<GetMemberSettingModel>();
             }
-
         }
-    
-
     }
 }

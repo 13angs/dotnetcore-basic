@@ -1,5 +1,7 @@
 using member_sv_setting.Models;
+using member_sv_setting.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace member_sv_setting.Controllers
 {
@@ -24,9 +26,16 @@ namespace member_sv_setting.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get()
+        public ActionResult Get([FromQuery] MemberSettingParam param)
         {
             IEnumerable<MemberSvSetting> settings = context.MemberSettings;
+            if(!String.IsNullOrEmpty(param.Query) && param.Query == "mid")
+            {
+                settings = context.MemberSettings
+                    .Where(s => s.MemberId == param.Mid);
+            }else{
+                settings = context.MemberSettings;
+            }
             return StatusCode(StatusCodes.Status200OK, settings);
         }
 
@@ -38,18 +47,32 @@ namespace member_sv_setting.Controllers
         }
 
         [HttpPut, Route("{id}")]
-        public async Task<ActionResult> Update([FromRoute] long id, [FromBody] MemberSvSetting model)
+        public async Task<ActionResult> Update([FromRoute] long id, [FromBody] MemberSettingModel model)
         {
-            MemberSvSetting? setting = await context.MemberSettings.FindAsync(id);
+            MemberSvSetting? setting = new MemberSvSetting();
+            if(!String.IsNullOrEmpty(model.Action) && model.Action == "by_mid")
+            {
+                setting = await context.MemberSettings
+                    .SingleOrDefaultAsync(s => s.MemberId == id);
+            }else{
+                setting = await context.MemberSettings.FindAsync(id);
+            }
             setting!.Name = model.Name; 
             await context.SaveChangesAsync();
             return StatusCode(StatusCodes.Status200OK, setting);
         }
 
         [HttpDelete, Route("{id}")]
-        public async Task<ActionResult> Remove([FromRoute] long id)
+        public async Task<ActionResult> Remove([FromRoute] long id, [FromQuery] MemberSettingParam param)
         {
-            MemberSvSetting? setting = await context.MemberSettings.FindAsync(id);
+            MemberSvSetting? setting = new MemberSvSetting();
+            if(!String.IsNullOrEmpty(param.Action) && param.Action == "by_mid")
+            {
+                setting = await context.MemberSettings.SingleOrDefaultAsync(s => s.MemberId == param.Mid);
+            }else{
+                setting = await context.MemberSettings.FindAsync(id);
+            }
+
             context.MemberSettings.Remove(setting!);
             await context.SaveChangesAsync();
             return StatusCode(StatusCodes.Status200OK, setting);
