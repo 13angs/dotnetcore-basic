@@ -11,6 +11,11 @@ jobs:
   build:
     name: Build the dotnet project
     runs-on: ubuntu-latest
+    # setting default pwd for run jobs
+    # refs: https://stackoverflow.com/questions/58139175/running-actions-in-another-directory
+    defaults:
+      run:
+        working-directory: ./api-to-api/member-service
 
     steps:
       - uses: actions/checkout@v3
