@@ -1,44 +1,39 @@
 using System.Text;
 using System.Text.Json;
-using member_service.Models;
+using member_service.DTOs;
 
-namespace member_service.SyncDataService
+namespace member_service.Services
 {
     public interface IMemberSetting
     {
-        public Task<object> Create(Member member);
-        public Task<object> Update(int id, Member member);
+        public Task<object> Create(MemberSettingModel model);
+        public Task<IEnumerable<GetMemberSettingModel>> Get();
+        // public Task<IEnumerable<GetMemberSettingModel>> Update(long id, GetMemberSettingModel model);
     }
 
-    public class MemberSettingModel 
-    {
-        public long MemberId {get; set;}
-        public string? Name {get; set;}
-    }
     public class MemberSettingService : IMemberSetting
     {
         private readonly HttpClient client;
         private readonly IConfiguration configuration;
 
+        public string endpoint {get; set; }
+        public string route {get; set; }
+
         public MemberSettingService(HttpClient client, IConfiguration configuration)
         {
             this.client = client;
             this.configuration = configuration;
+            endpoint = configuration["MemberSettingService:endpoint"];
+            route = configuration["MemberSettingService:route"];
 
         }
-        public async Task<object> Create(Member member)
+        public async Task<object> Create(MemberSettingModel model)
         {
-            MemberSettingModel settingModel = new MemberSettingModel{MemberId=member.Id, Name=member.Name};
             StringContent content = new StringContent(
-                JsonSerializer.Serialize(settingModel),
+                JsonSerializer.Serialize(model),
                 Encoding.UTF8,
                 "application/json"
             );
-
-            Console.WriteLine(member.Name);
-
-            string endpoint = configuration["MemberSettingService:endpoint"];
-            string route = configuration["MemberSettingService:route"];
 
             HttpResponseMessage response = new HttpResponseMessage();
             try{
@@ -60,40 +55,39 @@ namespace member_service.SyncDataService
 
         }
 
-        public async Task<object> Update(int id, Member member)
-        {
-            MemberSettingModel settingModel = new MemberSettingModel{MemberId=member.Id, Name=member.Name};
-            StringContent content = new StringContent(
-                JsonSerializer.Serialize(settingModel),
-                Encoding.UTF8,
-                "application/json"
-            );
-
-            Console.WriteLine(member.Name);
-
-            string endpoint = configuration["MemberSettingService:endpoint"];
-            string route = configuration["MemberSettingService:route"];
-
+        public async Task<IEnumerable<GetMemberSettingModel>> Get(){
             HttpResponseMessage response = new HttpResponseMessage();
+            IEnumerable<GetMemberSettingModel>? models = new List<GetMemberSettingModel>();
+
             try{
-                response = await client.PostAsync($"{endpoint}/{route}", content);
+                response = await client.GetAsync($"{endpoint}/{route}");
                 if(response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("--> Sync To MemberSetting Service is OK");
+                    var strRes = await response.Content.ReadAsStringAsync();
+                    models = JsonSerializer.Deserialize<IEnumerable<GetMemberSettingModel>>(strRes);
                 }
-                else
-                {
-                    Console.WriteLine("--> Fail to Sync To MemberSetting");
-                }
-                return new {status=200};
+
+                return models!;
             }catch (Exception ex)
             {
-                Console.WriteLine(ex);
-                return new {status=400};
+                if(!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine(ex);
+                    Console.WriteLine("--> Fail to Sync To MemberSetting");
+                }
+                return new List<GetMemberSettingModel>();
             }
-
         }
     
+        // public async Task<GetMemberSettingModel> Update(long id, GetMemberSettingModel model)
+        // {
+        //     try{
 
+        //     }catch (Exception ex)
+        //     {
+        //         Console.WriteLine(ex);
+        //     }
+        // }
     }
 }
