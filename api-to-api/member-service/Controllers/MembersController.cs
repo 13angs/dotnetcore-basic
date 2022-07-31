@@ -1,6 +1,8 @@
+using member_service.DTOs;
 using member_service.Models;
-using member_service.SyncDataService;
+using member_service.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace member_service.Controllers
 {
@@ -10,16 +12,16 @@ namespace member_service.Controllers
     {
         private readonly ILogger<MembersController> _logger;
         private readonly MemberContext context;
-        private readonly IMemberSetting memberSetting;
+        private readonly IMemberSetting stRepo;
 
         public MembersController(
             ILogger<MembersController> logger, 
             MemberContext context,
-            IMemberSetting memberSetting)
+            IMemberSetting stRepo)
         {
             _logger = logger;
             this.context = context;
-            this.memberSetting = memberSetting;
+            this.stRepo = stRepo;
         }
 
         [HttpPost]
@@ -30,16 +32,38 @@ namespace member_service.Controllers
 
             if(model.Id != 0)
             {
-                await memberSetting.Create(model);
+                MemberSettingModel settingModel = new MemberSettingModel{
+                    MemberId=model.Id,
+                    Name=model.Name
+                };
+
+                await stRepo.Create(settingModel);
             }
 
             return StatusCode(StatusCodes.Status201Created, model);
         }
 
         [HttpGet]
-        public ActionResult Get()
+        public async Task<ActionResult> Get([FromQuery] GetMemberSettingModelParam param)
         {
-            IEnumerable<Member> members = context.Members;
+            IList<Member> members = context.Members.ToList();
+            if(param.Query == "setting")
+            {
+
+                IEnumerable<GetMemberSettingModel> settingModels = await stRepo.Get();
+
+                foreach(GetMemberSettingModel model in settingModels)
+                {
+                    Member? member = members
+                        .FirstOrDefault(m => m.Id == model.memberId);
+                    if(member != null)
+                    {
+                        member.Setting = model;
+                    }
+                }
+            }else{
+                members = context.Members.ToList();
+            }
             return Ok(members);
         }
 

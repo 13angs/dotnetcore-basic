@@ -1,6 +1,6 @@
 using System.Net;
 using member_service.Models;
-using member_service.SyncDataService;
+using member_service.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
