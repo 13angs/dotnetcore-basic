@@ -10,14 +10,23 @@
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
 				"eamodio.gitlens",
+				"EthanSK.restore-terminals",
+				"ms-dotnettools.csharp@1.24.4",
+				// "ms-dotnettools.csharp",
+				"humao.rest-client",
+				"cweijan.vscode-mysql-client2",
+				"davidanson.vscode-markdownlint",
+				"kreativ-software.csharpextensions",
+				"eamodio.gitlens",
+				"TabNine.tabnine-vscode",
 				"EthanSK.restore-terminals"
 			]
 		}
 	},
 
 	"dockerComposeFile": "./docker-compose.yml",
-	"workspaceFolder": "/workspaces/dotnetcore-basic",
-	"service": "api",
+	"workspaceFolder": "/workspaces/dotnetcore-basic/nx-fullstack",
+	"service": "dbs-nx-fullstack-user-sv",
 	"shutdownAction": "stopCompose",
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -29,13 +38,13 @@
 	//    * Windows PowerShell:
 	//        dotnet dev-certs https --trust; dotnet dev-certs https -ep "$env:USERPROFILE/.aspnet/https/aspnetapp.pfx" -p "SecurePwdGoesHere"
 	//    * macOS/Linux terminal:
-	//        dotnet dev-certs https --trust; dotnet dev-certs https -ep "${HOME}/.aspnet/https/aspnetapp.pfx" -p "SecurePwdGoesHere"
+	//        dotnet dev-certs https --trust; dotnet dev-certs https -ep "./local-cert/aspnetapp.pfx" -p "SecurePwdGoesHere"
 	// 
 	// 2. Uncomment these 'remoteEnv' lines:
-	//    "remoteEnv": {
-	// 	      "ASPNETCORE_Kestrel__Certificates__Default__Password": "SecurePwdGoesHere",
-	//        "ASPNETCORE_Kestrel__Certificates__Default__Path": "/home/vscode/.aspnet/https/aspnetapp.pfx",
-	//    },
+	"remoteEnv": {
+		"ASPNETCORE_Kestrel__Certificates__Default__Password": "SecurePwdGoesHere",
+		"ASPNETCORE_Kestrel__Certificates__Default__Path": "../../local-cert/aspnetapp.pfx"
+	},
 	//
 	// 3. Do one of the following depending on your scenario:
 	//    * When using GitHub Codespaces and/or Remote - Containers:

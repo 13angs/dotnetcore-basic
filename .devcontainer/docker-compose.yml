@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  api:
+    build: 
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        - "VARIANT=6.0-bullseye"
+        - "NODE_VERSION=lts/*"
+    container_name: dotnetcore-basic-devcon-${OWNER}
+
+    volumes:
+      - ..:/workspaces/dotnetcore-basic:cached
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    command: sleep infinity
