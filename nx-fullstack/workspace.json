@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "group-sv": "apps/group-sv",
-    "group-sv-test": "apps/group-sv-test"
+    "group-sv-test": "apps/group-sv-test",
+    "user-sv": "apps/user-sv"
   }
 }
