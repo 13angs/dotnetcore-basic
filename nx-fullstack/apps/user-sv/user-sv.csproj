@@ -15,13 +15,17 @@
   
   <ItemGroup>
     
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\libs\DTOs\NxFullstack.DTOs.csproj" />
   </ItemGroup>
   
   <Target Name="CheckNxModuleBoundaries" BeforeTargets="Build">
     
-    <Exec Command="node ../../node_modules/@nx-dotnet/core/src/tasks/check-module-boundaries.js -p user-sv"/>
+    <Exec Command="node ../../node_modules/@nx-dotnet/core/src/tasks/check-module-boundaries.js -p user-sv" />
     
   </Target>
 </Project>

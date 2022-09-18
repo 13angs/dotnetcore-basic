@@ -8,12 +8,12 @@
     
     <Nullable>enable</Nullable>
     
-    <OutputPath>../../dist/libs/Models</OutputPath>
+    <OutputPath>../../dist/libs/DTOs</OutputPath>
   </PropertyGroup>
   
   <Target Name="CheckNxModuleBoundaries" BeforeTargets="Build">
     
-    <Exec Command="node ../../node_modules/@nx-dotnet/core/src/tasks/check-module-boundaries.js -p Models"/>
+    <Exec Command="node ../../node_modules/@nx-dotnet/core/src/tasks/check-module-boundaries.js -p DTOs"/>
     
   </Target>
 </Project>

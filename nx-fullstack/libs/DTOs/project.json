@@ -1,12 +1,12 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
-  "sourceRoot": "libs/Models",
+  "sourceRoot": "libs/DTOs",
   "targets": {
     "build": {
       "executor": "@nx-dotnet/core:build",
       "outputs": [
-        "dist/libs/Models"
+        "dist/libs/DTOs"
       ],
       "options": {
         "configuration": "Debug",
