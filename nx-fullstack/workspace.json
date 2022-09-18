@@ -4,6 +4,7 @@
   "projects": {
     "group-sv": "apps/group-sv",
     "group-sv-test": "apps/group-sv-test",
-    "user-sv": "apps/user-sv"
+    "user-sv": "apps/user-sv",
+    "Models": "libs/Models"
   }
 }

@@ -10,6 +10,15 @@
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
 				"eamodio.gitlens",
+				"EthanSK.restore-terminals",
+				"ms-dotnettools.csharp@1.24.4",
+				// "ms-dotnettools.csharp",
+				"humao.rest-client",
+				"cweijan.vscode-mysql-client2",
+				"davidanson.vscode-markdownlint",
+				"kreativ-software.csharpextensions",
+				"eamodio.gitlens",
+				"TabNine.tabnine-vscode",
 				"EthanSK.restore-terminals"
 			]
 		}
