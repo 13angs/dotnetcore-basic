@@ -18,6 +18,17 @@
         }
       }
     },
+    "publish": {
+      "executor": "@nx-dotnet/core:publish",
+      "outputs": [
+        "dist/apps/group-sv"
+      ],
+      "options": {
+        "configuration": "Release",
+        "noDependencies": true,
+        "selfContained": false
+      }
+    },
     "serve": {
       "executor": "@nx-dotnet/core:serve",
       "options": {
