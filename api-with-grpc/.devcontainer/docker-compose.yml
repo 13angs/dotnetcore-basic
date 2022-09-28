@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  dbs-api-with-grpc:
+    build: 
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        - "VARIANT=6.0-bullseye"
+        - "NODE_VERSION=lts/*"
+    container_name: dbs-api-with-grpc-devcon-${OWNER}
+
+    volumes:
+      - ../..:/workspaces/dotnetcore-basic:cached
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    command: sleep infinity
+    networks:
+      - dbs-api-with-grpc-network
+
+networks:
+  dbs-api-with-grpc-network:
+    external: true
+    name: dbs-api-with-grpc-network
