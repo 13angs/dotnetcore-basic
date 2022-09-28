@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using product_sv.Interfaces;
 using product_sv.Models;
 using product_sv.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var configuration = builder.Configuration;
 
 // Add services to the container.
 
@@ -14,6 +17,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContextPool<ProductContext>(option => {
     option.UseInMemoryDatabase("ProductDb");
 });
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+builder.Services.AddScoped<IGrpcGroupService, GrpcGroupService>();
 
 var app = builder.Build();
 

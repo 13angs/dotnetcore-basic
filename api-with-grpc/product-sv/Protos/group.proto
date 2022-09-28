@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "product_sv";
+
+service GrpcGroup {
+    rpc GetAllGroups (GetAllRequest) returns (GroupResponse);
+}
+
+message GetAllRequest {}
+
+message GrpcGroupModel{
+    int32 groupId = 1;
+    string groupName = 2;
+}
+
+message GroupResponse {
+    repeated GrpcGroupModel group = 1;
+}
