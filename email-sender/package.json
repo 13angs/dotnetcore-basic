@@ -1,0 +1,19 @@
+{
+  "name": "email-sender",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "nx g @nx-dotnet/core:restore"
+  },
+  "private": true,
+  "devDependencies": {
+    "@nrwl/js": "15.0.1",
+    "@nx-dotnet/core": "^1.15.0",
+    "nx": "15.0.1",
+    "prettier": "^2.6.2"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {}
+}
