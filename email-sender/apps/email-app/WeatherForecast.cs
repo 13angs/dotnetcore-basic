@@ -1,4 +1,4 @@
-namespace _EmailSv;
+namespace EmailSender.EmailApp;
 
 public class WeatherForecast
 {

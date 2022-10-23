@@ -38,7 +38,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
-packages/*/bin
-packages/*/obj
-!packages/Common
-!packages/email-sv
+apps/*/bin
+apps/*/obj
+libs/*/bin
+libs/*/obj

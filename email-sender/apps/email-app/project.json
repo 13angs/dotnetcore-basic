@@ -1,17 +1,28 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "name": "Common",
-  "projectType": "library",
-  "sourceRoot": "packages/Common",
+  "name": "email-app",
+  "projectType": "application",
+  "sourceRoot": "apps/email-app",
   "targets": {
     "build": {
       "executor": "@nx-dotnet/core:build",
       "outputs": [
-        "dist/packages/Common"
+        "dist/apps/email-app"
       ],
       "options": {
         "configuration": "Debug",
         "noDependencies": true
+      },
+      "configurations": {
+        "production": {
+          "configuration": "Release"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx-dotnet/core:serve",
+      "options": {
+        "configuration": "Debug"
       },
       "configurations": {
         "production": {
