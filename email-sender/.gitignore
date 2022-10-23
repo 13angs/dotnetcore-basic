@@ -40,5 +40,5 @@ Thumbs.db
 
 packages/*/bin
 packages/*/obj
-packages/*/bin
-packages/*/obj
+!packages/Common
+!packages/email-sv
