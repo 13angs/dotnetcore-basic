@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EmailSender.EmailApp.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/emails")]
 public class EmailSenderController : ControllerBase
 {
   private static readonly string[] Summaries = new[]
@@ -22,11 +22,21 @@ public class EmailSenderController : ControllerBase
     _emailSender = emailSender;
   }
 
+  [HttpPost]
+  public async Task<ActionResult> Post([FromForm] IFormFileCollection form)
+  {
+    // IFormFileCollection files = Request.Form.Files.Any() ? Request.Form.Files : new FormFileCollection();
+    IFormFileCollection files = form.Any() ? form : new FormFileCollection();
+    Message message = new Message(new string[] { "romdhon.1998@gmail.com" }, "Test email with attachment", "This is the content with attachment", files);
+    await _emailSender.SendEmailAsync(message);
+    return Ok();
+  }
+
   [HttpGet]
-  public ActionResult Get()
+  public async Task<ActionResult> Get()
   {
     Message message = new Message(new string[] { "romdhon.1998@gmail.com" }, "Test email", "This is the content");
-    _emailSender.SendEmail(message);
+    await _emailSender.SendEmailAsync(message);
     return Ok();
   }
 }
