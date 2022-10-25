@@ -14,3 +14,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
     command: sleep infinity
+
+    networks:
+      - dotnetbs-network
+
+networks:
+  dotnetbs-network:
+    name: dotnetbs-network
+    external: true

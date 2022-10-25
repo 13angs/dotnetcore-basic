@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  dotnetbs-db:
+    image: mariadb:10.8.3-jammy
+    container_name: dotnetbs-db
+    restart: always
+    environment:
+      TZ: Bangkok/Asia
+      MARIADB_ROOT_PASSWORD: P#ssw0rd
+    volumes:
+      - type: bind
+        target: /var/lib/mysql
+        source: ./db
+    networks:
+      - dotnetbs-network
+
+networks:
+  dotnetbs-network:
+    name: dotnetbs-network
+    external: true
